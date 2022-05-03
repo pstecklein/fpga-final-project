@@ -5,8 +5,10 @@ use IEEE.NUMERIC_STD.ALL;
 entity move_calculator is
     port ( clk,en,rst,offense,start : in  std_logic;
                       player_choice : in  std_logic_vector (2 downto 0);
-                          game_over : out std_logic;
-                       p_h_r, c_h_r : out std_logic_vector(7 downto 0)); -- let game_flow know if game is over
+                          game_over : out std_logic; -- let game_flow know if game is over
+                       p_h_r, c_h_r : out std_logic_vector(7 downto 0);
+                       p_s_r, c_s_r : out std_logic_vector(7 downto 0);
+                       p_l_r, c_l_r : out std_logic_vector(7 downto 0)); 
 end move_calculator;
 
 architecture Behavioral of move_calculator is
@@ -24,6 +26,10 @@ begin
 
     p_h_r <= player_stats(7 downto 0);
     c_h_r <= computer_stats(7 downto 0);
+    p_s_r <= player_stats(15 downto 8);
+    c_s_r <= computer_stats(15 downto 8);
+    p_l_r <= player_stats(23 downto 16);
+    c_l_r <= computer_stats(23 downto 16);
 
     process(clk)
     begin

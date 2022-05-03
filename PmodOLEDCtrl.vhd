@@ -21,6 +21,10 @@ entity PmodOLEDCtrl is
 		RST 	: in  STD_LOGIC;
 		player_health_oled   : in std_logic_vector(7 downto 0);
         computer_health_oled : in std_logic_vector(7 downto 0);
+        player_strength_oled   : in std_logic_vector(7 downto 0);
+        computer_strength_oled : in std_logic_vector(7 downto 0);
+        player_luck_oled   : in std_logic_vector(7 downto 0);
+        computer_luck_oled : in std_logic_vector(7 downto 0);
 		CS  	: out STD_LOGIC;
 		SDIN	: out STD_LOGIC;
 		SCLK	: out STD_LOGIC;
@@ -49,7 +53,9 @@ end component;
 component OledEx is
     Port ( CLK 	: in  STD_LOGIC;
 		RST 	: in	STD_LOGIC;
-		  player_health0, player_health1, computer_health0, computer_health1: in std_logic_vector(7 downto 0);
+		player_health0, player_health1, computer_health0, computer_health1: in std_logic_vector(7 downto 0);
+		player_strength0, player_strength1, computer_strength0, computer_strength1: in std_logic_vector(7 downto 0);
+		player_luck0, player_luck1, computer_luck0, computer_luck1: in std_logic_vector(7 downto 0);
 		EN		: in  STD_LOGIC;
 		CS  	: out STD_LOGIC;
 		SDO		: out STD_LOGIC;
@@ -80,6 +86,8 @@ signal example_dc			: STD_LOGIC;
 signal example_done		: STD_LOGIC;
 
 signal player_health0, player_health1, computer_health0, computer_health1: std_logic_vector(7 downto 0);
+signal player_strength0, player_strength1, computer_strength0, computer_strength1: std_logic_vector(7 downto 0);
+signal player_luck0, player_luck1, computer_luck0, computer_luck1: std_logic_vector(7 downto 0);
 
 begin
 
@@ -88,8 +96,18 @@ begin
     computer_health0 <= std_logic_vector((unsigned(computer_health_oled)/10) + 48);
     computer_health1 <= std_logic_vector((unsigned(computer_health_oled) mod 10) + 48);
     
+    player_strength0 <= std_logic_vector((unsigned(player_strength_oled)/10) + 48);
+    player_strength1 <= std_logic_vector((unsigned(player_strength_oled) mod 10) + 48);
+    computer_strength0 <= std_logic_vector((unsigned(computer_strength_oled)/10) + 48);
+    computer_strength1 <= std_logic_vector((unsigned(computer_strength_oled) mod 10) + 48);
+    
+    player_luck0 <= std_logic_vector((unsigned(player_luck_oled)/10) + 48);
+    player_luck1 <= std_logic_vector((unsigned(player_luck_oled) mod 10) + 48);
+    computer_luck0 <= std_logic_vector((unsigned(computer_luck_oled)/10) + 48);
+    computer_luck1 <= std_logic_vector((unsigned(computer_luck_oled) mod 10) + 48);
+    
 	Init: OledInit port map(CLK, RST, init_en, init_cs, init_sdo, init_sclk, init_dc, RES, VBAT, VDD, init_done);
-	Example: OledEx Port map(CLK, RST, player_health0, player_health1, computer_health0, computer_health1, example_en, example_cs, example_sdo, example_sclk, example_dc, example_done);
+	Example: OledEx Port map(CLK, RST, player_health0, player_health1, computer_health0, computer_health1, player_strength0, player_strength1, computer_strength0, computer_strength1, player_luck0, player_luck1, computer_luck0, computer_luck1, example_en, example_cs, example_sdo, example_sclk, example_dc, example_done);
 	
 	--MUXes to indicate which outputs are routed out depending on which block is enabled
 	CS <= init_cs when (current_state = OledInitialize) else

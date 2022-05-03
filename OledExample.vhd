@@ -24,6 +24,8 @@ entity OledEx is
     Port (    CLK 	: in  STD_LOGIC; --System CLK
 			  RST 	: in	STD_LOGIC; --Synchronous Reset
 			  player_health0, player_health1, computer_health0, computer_health1: in std_logic_vector(7 downto 0);
+			  player_strength0, player_strength1, computer_strength0, computer_strength1: in std_logic_vector(7 downto 0);
+			  player_luck0, player_luck1, computer_luck0, computer_luck1: in std_logic_vector(7 downto 0);
 			  EN		: in  STD_LOGIC; --Example block enable pin
 			  CS  	: out STD_LOGIC; --SPI Chip Select
 			  SDO		: out STD_LOGIC; --SPI Data out
@@ -115,8 +117,8 @@ constant clear_screen : OledMem :=   ((X"20",X"20",X"20",X"20",X"20",X"20",X"20"
 --Constant that holds "This is Digilent's PmodOLED"
 signal digilent_screen : OledMem:= ((X"59",X"6F",X"75",X"20",X"20",X"20",X"43",X"6F",X"6D",X"70",X"75",X"74",X"65",X"72",X"20",X"20"),	
 												(X"48",X"3A",X"20",player_health0,player_health1,X"20",X"48",X"3A",X"20",computer_health0,computer_health1,X"20",X"20",X"20",X"20",X"20"),
-												(X"53",X"3A",X"20",X"20",X"20",X"20",X"53",X"3A",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20"),
-												(X"4C",X"3A",X"20",X"20",X"20",X"20",X"4C",X"3A",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20"));
+												(X"53",X"3A",X"20",player_strength0,player_strength1,X"20",X"53",X"3A",X"20",computer_strength0,computer_strength1,X"20",X"20",X"20",X"20",X"20"),
+												(X"4C",X"3A",X"20",player_luck0,player_luck1,X"20",X"4C",X"3A",X"20",computer_luck0,computer_luck1,X"20",X"20",X"20",X"20",X"20"));
 --Current overall state of the state machine
 signal current_state : states := Idle;
 --State to go to after the SPI transmission is finished

@@ -34,15 +34,15 @@ architecture Structural of game_top is
     component game_flow is 
         Port ( clk,en,rst,btn,game_over,ready : in  std_logic;
                                       setting : in  std_logic_vector(2 downto 0);
-                                 go,off,pause : out std_logic
-                                 --choice : out std_logic_vector(2 downto 0)
-                                 );
+                                 go,off,pause : out std_logic);
     end component;
     component move_calculator is 
         Port (        clk,en,rst,offense,start : in  std_logic;
                                  player_choice : in  std_logic_vector (2 downto 0);
-                                     game_over : out std_logic;
-                                  p_h_r, c_h_r : out std_logic_vector(7 downto 0)); -- let game_flow know if game is over
+                                     game_over : out std_logic; -- let game_flow know if game is over
+                                  p_h_r, c_h_r : out std_logic_vector(7 downto 0);
+                                  p_s_r, c_s_r : out std_logic_vector(7 downto 0);
+                                  p_l_r, c_l_r : out std_logic_vector(7 downto 0)); 
     
     end component;
     component cooldown_counter is
@@ -57,8 +57,12 @@ architecture Structural of game_top is
             CLK 	: in  STD_LOGIC;
             RST 	: in  STD_LOGIC;
             
-            player_health_oled   : in std_logic_vector(7 downto 0);
-            computer_health_oled : in std_logic_vector(7 downto 0);
+            player_health_oled     : in std_logic_vector(7 downto 0);
+            computer_health_oled   : in std_logic_vector(7 downto 0);
+            player_strength_oled   : in std_logic_vector(7 downto 0);
+            computer_strength_oled : in std_logic_vector(7 downto 0);
+            player_luck_oled       : in std_logic_vector(7 downto 0);
+            computer_luck_oled     : in std_logic_vector(7 downto 0);
             
             CS  	: out STD_LOGIC;
             SDIN	: out STD_LOGIC;
@@ -81,6 +85,10 @@ architecture Structural of game_top is
     signal player_move : std_logic_vector(2 downto 0);
     signal p_h_r_signal : std_logic_vector(7 downto 0);
     signal c_h_r_signal : std_logic_vector(7 downto 0);
+    signal p_s_r_signal : std_logic_vector(7 downto 0);
+    signal c_s_r_signal : std_logic_vector(7 downto 0);
+    signal p_l_r_signal : std_logic_vector(7 downto 0);
+    signal c_l_r_signal : std_logic_vector(7 downto 0);
     
 begin              
 
@@ -123,6 +131,10 @@ begin
         player_choice => sw,
         p_h_r => p_h_r_signal,
         c_h_r => c_h_r_signal,
+        p_s_r => p_s_r_signal,
+        c_s_r => c_s_r_signal,
+        p_l_r => p_l_r_signal,
+        c_l_r => c_l_r_signal,
         game_over => game_over_signal);
         
     u8 : cooldown_counter port map (
@@ -140,6 +152,10 @@ begin
         
         player_health_oled => p_h_r_signal,
         computer_health_oled => c_h_r_signal,
+        player_strength_oled => p_s_r_signal,
+        computer_strength_oled => c_s_r_signal,
+        player_luck_oled => p_l_r_signal,
+        computer_luck_oled => c_l_r_signal,
     
         CS => CS,
         SDIN => SDIN,
