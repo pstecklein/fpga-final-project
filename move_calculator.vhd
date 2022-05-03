@@ -13,7 +13,7 @@ end move_calculator;
 
 architecture Behavioral of move_calculator is
 
-    type state is (idle, player_jab, player_jab_setup, player_jab_calculate, player_jab_update, player_dive, player_dive_setup, player_dive_calculate, player_dive_update, player_special, player_special_setup, player_special_calculate, player_special_update, player_health_potion, player_health_potion_setup, player_health_potion_calculate, player_health_potion_update, player_strength_potion, player_strength_potion_setup, player_strength_potion_calculate, player_strength_potion_update, player_luck_potion, player_luck_potion_setup, player_luck_potion_calculate, player_luck_potion_update, player_block, player_block_setup, player_block_calculate, player_block_update, player_dodge, player_dodge_setup, player_dodge_calculate, player_dodge_update, player_counter, player_counter_setup, player_counter_calculate, player_counter_update, restart_game, finish);
+    type state is (idle, player_jab, player_jab_setup, player_jab_calculate, player_jab_update, player_dive, player_dive_setup, player_dive_calculate, player_dive_update, player_special, player_special_setup, player_special_calculate, player_special_update, player_health_potion, player_health_potion_setup, player_health_potion_calculate, player_health_potion_update, player_strength_potion, player_strength_potion_setup, player_strength_potion_calculate, player_strength_potion_update, player_luck_potion, player_luck_potion_setup, player_luck_potion_calculate, player_luck_potion_update, player_block, player_block_setup, player_block_calculate, player_block_update, player_dodge, player_dodge_setup, player_dodge_calculate, player_dodge_update, player_counter, player_counter_setup, player_counter_calculate, player_counter_update, computer_potion, computer_potion_update, restart_game, finish);
     signal curr : state := idle;
     
     signal player_stats : std_logic_vector(23 downto 0) := "000000000000000001100011";
@@ -247,23 +247,35 @@ begin
                             curr <= player_block_setup;
                             
                         when player_block_setup =>
-                            curr <= player_block_calculate;
+                            if (seed(0) ='1' and seed(1) = '1') and (seed(2) = '1' or seed(3) = '1') then
+                                curr <= computer_potion;
+                            else
+                                curr <= player_block_calculate;
+                            end if;
                             
                         when player_block_calculate =>
-                            if unsigned(computer_stats(15 downto 8)) > 0 then
+                            if unsigned(computer_stats(15 downto 8)) > 2 then
+                                if (unsigned(player_stats(7 downto 0)) <= 10) then
+                                    game_over <= '1';
+                                    curr <= restart_game;
+                                else
+                                    player_stats(7 downto 0) <= std_logic_vector(unsigned(player_stats(7 downto 0))-10);
+                                    curr <= player_block_update;
+                                end if;
+                            elsif unsigned(computer_stats(15 downto 8)) > 0 then
+                                if (unsigned(player_stats(7 downto 0)) <= 8) then
+                                    game_over <= '1';
+                                    curr <= restart_game;
+                                else
+                                    player_stats(7 downto 0) <= std_logic_vector(unsigned(player_stats(7 downto 0))-8);
+                                    curr <= player_block_update;
+                                end if;
+                            else
                                 if (unsigned(player_stats(7 downto 0)) <= 6) then
                                     game_over <= '1';
                                     curr <= restart_game;
                                 else
                                     player_stats(7 downto 0) <= std_logic_vector(unsigned(player_stats(7 downto 0))-6);
-                                    curr <= player_block_update;
-                                end if;
-                            else
-                                if (unsigned(player_stats(7 downto 0)) <= 4) then
-                                    game_over <= '1';
-                                    curr <= restart_game;
-                                else
-                                    player_stats(7 downto 0) <= std_logic_vector(unsigned(player_stats(7 downto 0))-4);
                                     curr <= player_block_update;
                                 end if;
                             end if;
@@ -275,10 +287,22 @@ begin
                             curr <= player_dodge_setup;
                             
                         when player_dodge_setup =>
-                            curr <= player_dodge_calculate;
+                            if (seed(0) ='1' and seed(1) = '1') and (seed(2) = '1' or seed(3) = '1') then
+                                curr <= computer_potion;
+                            else
+                                curr <= player_dodge_calculate;
+                            end if;
                             
                         when player_dodge_calculate =>
-                            if unsigned(computer_stats(15 downto 8)) > 0 then
+                            if unsigned(computer_stats(23 downto 16)) > 0 then
+                                if (unsigned(player_stats(7 downto 0)) <= 12) then
+                                    game_over <= '1';
+                                    curr <= restart_game;
+                                else
+                                    player_stats(7 downto 0) <= std_logic_vector(unsigned(player_stats(7 downto 0))-12);
+                                    curr <= player_dodge_update;
+                                end if;
+                            elsif ((seed(5) = '1') and (player_stats(23 downto 16) = "00000000")) then
                                 if (unsigned(player_stats(7 downto 0)) <= 12) then
                                     game_over <= '1';
                                     curr <= restart_game;
@@ -287,13 +311,7 @@ begin
                                     curr <= player_dodge_update;
                                 end if;
                             else
-                                if (unsigned(player_stats(7 downto 0)) <= 8) then
-                                    game_over <= '1';
-                                    curr <= restart_game;
-                                else
-                                    player_stats(7 downto 0) <= std_logic_vector(unsigned(player_stats(7 downto 0))-8);
-                                    curr <= player_dodge_update;
-                                end if;
+                                curr <= player_dodge_update;
                             end if;
                         
                         when player_dodge_update =>
@@ -303,15 +321,27 @@ begin
                             curr <= player_counter_setup;
                             
                         when player_counter_setup =>
-                            curr <= player_counter_calculate;
+                            if (seed(0) ='1' and seed(1) = '1') and (seed(2) = '1' or seed(3) = '1') then
+                                curr <= computer_potion;
+                            else
+                                curr <= player_counter_calculate;
+                            end if;
                             
                         when player_counter_calculate =>
-                            if unsigned(computer_stats(15 downto 8)) > 0 then
-                                if (unsigned(player_stats(7 downto 0)) <= 32) then
+                            if (unsigned(player_stats(23 downto 16)) > 1) and (seed(0) = '1') then
+                                if (unsigned(computer_stats(7 downto 0)) <= 24) then
                                     game_over <= '1';
                                     curr <= restart_game;
                                 else
-                                    player_stats(7 downto 0) <= std_logic_vector(unsigned(player_stats(7 downto 0))-32);
+                                    computer_stats(7 downto 0) <= std_logic_vector(unsigned(computer_stats(7 downto 0))-24);
+                                    curr <= player_counter_update;
+                                end if;
+                            elsif unsigned(computer_stats(15 downto 8)) > 1 then
+                                if (unsigned(player_stats(7 downto 0)) <= 40) then
+                                    game_over <= '1';
+                                    curr <= restart_game;
+                                else
+                                    player_stats(7 downto 0) <= std_logic_vector(unsigned(player_stats(7 downto 0))-40);
                                     curr <= player_counter_update;
                                 end if;
                             else
@@ -325,6 +355,31 @@ begin
                             end if;
                         
                         when player_counter_update =>
+                            curr <= finish;
+                            
+                        when computer_potion =>
+                            if seed(7) ='1' then
+                                if unsigned(computer_stats(7 downto 0)) >= 91 then
+                                    computer_stats(7 downto 0) <= "01100011";
+                                else
+                                    computer_stats(7 downto 0) <= std_logic_vector(unsigned(computer_stats(7 downto 0))+8);
+                                end if;
+                            elsif seed(6) = '1' then
+                                if unsigned(computer_stats(15 downto 8)) >= 98 then
+                                    computer_stats(15 downto 8) <= "01100011";
+                                else
+                                    computer_stats(15 downto 8) <= std_logic_vector(unsigned(computer_stats(15 downto 8))+1);
+                                end if;
+                            else
+                                if unsigned(computer_stats(23 downto 16)) >= 98 then
+                                    computer_stats(23 downto 16) <= "01100011";
+                                else
+                                    computer_stats(23 downto 16) <= std_logic_vector(unsigned(computer_stats(23 downto 16))+1);
+                                end if;
+                            end if;
+                            curr <= computer_potion_update;
+                            
+                        when computer_potion_update =>
                             curr <= finish;
                             
                         when restart_game =>
