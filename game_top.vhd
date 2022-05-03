@@ -7,7 +7,8 @@ entity game_top is
             btn : in  std_logic_vector(1 downto 0);
              sw : in  std_logic_vector(2 downto 0);
             --ssd : out std_logic_vector(19 downto 0);
-          
+            A,B,C,D,E,F,G : out std_logic;
+            digit_select : out std_logic;
             CS  	: out STD_LOGIC;
             SDIN	: out STD_LOGIC;
             SCLK	: out STD_LOGIC;
@@ -90,7 +91,17 @@ architecture Structural of game_top is
     signal p_l_r_signal : std_logic_vector(7 downto 0);
     signal c_l_r_signal : std_logic_vector(7 downto 0);
     
-begin              
+begin
+
+
+    A <= '1';
+    B <= is_offense and '1';
+    C <= '0';
+    D <= not(is_offense) and '1';
+    E <= '1';
+    F <= '1';
+    G <= is_offense and '1';
+    digit_select <= '1';
 
     u1 : clock_div port map ( 
         clk => clk,
@@ -144,7 +155,6 @@ begin
         ready => cooldown_finished
         --seven_seg_out => ssd
         );
-        
         
     PmodOLED : PmodOLEDCtrl port map ( 
         CLK => clk,
