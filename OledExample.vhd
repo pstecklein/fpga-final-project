@@ -104,19 +104,19 @@ type OledMem is array(0 to 3, 0 to 15) of STD_LOGIC_VECTOR(7 downto 0);
 signal current_screen : OledMem; 
 --Constant that contains the screen filled with the Alphabet and numbers
 signal alphabet_screen : OledMem :=((X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20"),
-												(X"20",X"20",X"20",X"20",X"20",X"57",X"65",X"6c",X"63",X"6F",X"6D",X"65",x"20",X"20",X"20",X"20"),
-												(X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"74",X"6F",X"20",X"20",X"20",X"20",X"20",X"20",X"20"),
-												(X"20",X"20",X"20",X"20",X"42",X"6C",X"61",X"63",X"6B",X"6A",X"61",X"63",X"6B",X"20",X"20",X"20"));
+												(X"20",X"20",X"48",X"65",X"6C",X"6C",X"6F",X"20",X"54",X"68",X"65",X"72",X"65",X"21",X"20",X"20"),
+												(X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20"),
+												(X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20"));
 --Constant that fills the screen with blank (spaces) entries
 constant clear_screen : OledMem :=   ((X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20"),	
 												(X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20"),
 												(X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20"),
 												(X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20"));
 --Constant that holds "This is Digilent's PmodOLED"
-signal digilent_screen : OledMem:= ((X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20"),	
-												(X"20",X"20",X"20",player_health0,player_health1,X"20",X"20",X"20",X"20",X"20",X"20",computer_health0,computer_health1,X"20",X"20",X"20"),
-												(X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20"),
-												(X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20"));
+signal digilent_screen : OledMem:= ((X"59",X"6F",X"75",X"20",X"20",X"20",X"43",X"6F",X"6D",X"70",X"75",X"74",X"65",X"72",X"20",X"20"),	
+												(X"48",X"3A",X"20",player_health0,player_health1,X"20",X"48",X"3A",X"20",computer_health0,computer_health1,X"20",X"20",X"20",X"20",X"20"),
+												(X"53",X"3A",X"20",X"20",X"20",X"20",X"53",X"3A",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20"),
+												(X"4C",X"3A",X"20",X"20",X"20",X"20",X"4C",X"3A",X"20",X"20",X"20",X"20",X"20",X"20",X"20",X"20"));
 --Current overall state of the state machine
 signal current_state : states := Idle;
 --State to go to after the SPI transmission is finished
