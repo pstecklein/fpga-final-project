@@ -20,12 +20,11 @@ begin
     begin
         if rising_edge(clk) then
     
-            -- resets the state machine and its outputs
+            -- restart game
             if rst = '1' then
                 pause <= '1';
                 curr <= idle;
                 
-            -- usual operation
             elsif en = '1' then
                 case curr is
     
