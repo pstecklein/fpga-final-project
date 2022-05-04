@@ -21,16 +21,16 @@ use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity OledEx is
-    Port (    CLK 	: in  STD_LOGIC; --System CLK
+    Port (                CLK 	: in  STD_LOGIC; --System CLK
 			  RST 	: in	STD_LOGIC; --Synchronous Reset
 			  player_health0, player_health1, computer_health0, computer_health1: in std_logic_vector(7 downto 0);
 			  player_strength0, player_strength1, computer_strength0, computer_strength1: in std_logic_vector(7 downto 0);
 			  player_luck0, player_luck1, computer_luck0, computer_luck1: in std_logic_vector(7 downto 0);
-			  EN		: in  STD_LOGIC; --Example block enable pin
+			  EN	: in  STD_LOGIC; --Example block enable pin
 			  CS  	: out STD_LOGIC; --SPI Chip Select
-			  SDO		: out STD_LOGIC; --SPI Data out
+			  SDO	: out STD_LOGIC; --SPI Data out
 			  SCLK	: out STD_LOGIC; --SPI Clock
-			  DC		: out STD_LOGIC; --Data/Command Controller
+			  DC	: out STD_LOGIC; --Data/Command Controller
 			  FIN  	: out STD_LOGIC);--Finish flag for example block
 end OledEx;
 
@@ -39,24 +39,24 @@ architecture Behavioral of OledEx is
 --SPI Controller Component
 COMPONENT SpiCtrl
     PORT(
-         CLK : IN  std_logic;
-         RST : IN  std_logic;
-         SPI_EN : IN  std_logic;
-         SPI_DATA : IN  std_logic_vector(7 downto 0);
-         CS : OUT  std_logic;
-         SDO : OUT  std_logic;
-         SCLK : OUT  std_logic;
-         SPI_FIN : OUT  std_logic
+         CLK        : IN  std_logic;
+         RST        : IN  std_logic;
+         SPI_EN     : IN  std_logic;
+         SPI_DATA   : IN  std_logic_vector(7 downto 0);
+         CS         : OUT  std_logic;
+         SDO        : OUT  std_logic;
+         SCLK       : OUT  std_logic;
+         SPI_FIN    : OUT  std_logic
         );
     END COMPONENT;
 
 --Delay Controller Component
 COMPONENT Delay
     PORT(
-         CLK : IN  std_logic;
-         RST : IN  std_logic;
-         DELAY_MS : IN  std_logic_vector(11 downto 0);
-         DELAY_EN : IN  std_logic;
+         CLK       : IN  std_logic;
+         RST       : IN  std_logic;
+         DELAY_MS  : IN  std_logic_vector(11 downto 0);
+         DELAY_EN  : IN  std_logic;
          DELAY_FIN : OUT  std_logic
         );
     END COMPONENT;
@@ -64,7 +64,7 @@ COMPONENT Delay
 --Character Library, Latency = 1
 COMPONENT charLib
   PORT (
-    clka : IN STD_LOGIC; --Attach System Clock to it
+    clka  : IN STD_LOGIC; --Attach System Clock to it
     addra : IN STD_LOGIC_VECTOR(10 DOWNTO 0); --First 8 bits is the ASCII value of the character the last 3 bits are the parts of the char
     douta : OUT STD_LOGIC_VECTOR(7 DOWNTO 0) --Data byte out
   );
