@@ -6,7 +6,7 @@ entity move_calculator is
     port ( clk,en,rst,offense,start : in  std_logic;
                       player_choice : in  std_logic_vector (2 downto 0);
                           game_over : out std_logic; -- let game_flow know if game is over
-                       p_h_r, c_h_r : out std_logic_vector(7 downto 0);
+                       p_h_r, c_h_r : out std_logic_vector(7 downto 0); -- outputs for the oled, p_h_r = player health read
                        p_s_r, c_s_r : out std_logic_vector(7 downto 0);
                        p_l_r, c_l_r : out std_logic_vector(7 downto 0)); 
 end move_calculator;
@@ -16,7 +16,7 @@ architecture Behavioral of move_calculator is
     type state is (idle, player_jab, player_jab_setup, player_jab_calculate, player_jab_update, player_dive, player_dive_setup, player_dive_calculate, player_dive_update, player_special, player_special_setup, player_special_calculate, player_special_update, player_health_potion, player_health_potion_setup, player_health_potion_calculate, player_health_potion_update, player_strength_potion, player_strength_potion_setup, player_strength_potion_calculate, player_strength_potion_update, player_luck_potion, player_luck_potion_setup, player_luck_potion_calculate, player_luck_potion_update, player_block, player_block_setup, player_block_calculate, player_block_update, player_dodge, player_dodge_setup, player_dodge_calculate, player_dodge_update, player_counter, player_counter_setup, player_counter_calculate, player_counter_update, computer_potion, computer_potion_update, restart_game, finish);
     signal curr : state := idle;
     
-    signal player_stats : std_logic_vector(23 downto 0) := "000000000000000001100011";
+    signal player_stats   : std_logic_vector(23 downto 0) := "000000000000000001100011";
     signal computer_stats : std_logic_vector(23 downto 0) := "000000000000000001100011";
     
     signal seed : std_logic_vector(7 downto 0) := "10101010";
@@ -57,7 +57,7 @@ begin
                                             curr <= player_health_potion;
                                         elsif player_choice = "101" then   -- strength
                                             curr <= player_strength_potion;
-                                        else -- luck
+                                        else                               -- luck
                                             curr <= player_luck_potion;
                                         end if;
                                     else
