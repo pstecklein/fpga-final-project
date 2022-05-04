@@ -5,10 +5,9 @@ use IEEE.NUMERIC_STD.ALL;
 entity game_top is
     Port (  clk : in  std_logic;
             btn : in  std_logic_vector(1 downto 0);
-             sw : in  std_logic_vector(2 downto 0);
-            --ssd : out std_logic_vector(19 downto 0);
+            sw  : in  std_logic_vector(2 downto 0);
             A,B,C,D,E,F,G : out std_logic;
-            digit_select : out std_logic;
+            digit_select  : out std_logic;
             CS  	: out STD_LOGIC;
             SDIN	: out STD_LOGIC;
             SCLK	: out STD_LOGIC;
